@@ -14,6 +14,7 @@ def main():
     parser.add_argument("-o", help="archivo de salida JSON (opcional)")
     parser.add_argument("-v", action= "store_true", help="modo para trace y debug")
     parser.add_argument("-r", "--retry", type=int, default=30, help="Segundos entre reintentos de conexión")
+    parser.add_argument("-d", help="JSON de entrada directo (alternativa a -i)")
 
     args = parser.parse_args()
 
@@ -21,6 +22,12 @@ def main():
         logging.basicConfig(level=logging.DEBUG)
 
     request = {"UUID": str(uuid.getnode()), "ACTION": "subscribe"}
+
+    if args.d:
+        request = json.loads(args.d)
+    else:
+        with open(args.i) as f:
+            request = json.load(f)
 
     while True:
         try:

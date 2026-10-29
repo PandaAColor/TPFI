@@ -13,6 +13,8 @@ def main():
     parser.add_argument("-o", help="archivo de salida JSON(opcional)")
     parser.add_argument("-p", type=int, default=8080, help="puerto del servidor")
     parser.add_argument("-v", action= "store_true", help="modo para trace y debug")
+    parser.add_argument("-d", help="JSON de entrada directo (alternativa a -i)")
+
     args = parser.parse_args()
 
     if args.v:
@@ -36,8 +38,16 @@ def main():
     if args.o:
         with open(args.o, "w") as f:
             f.write(response)
+
+        if args.d:
+            request = json.loads(args.d)
     else:
-        print(response)
+        with open(args.i) as f:
+            request = json.load(f)
+
+
+    
+    print(response)
 
 
 if __name__ == "__main__":
