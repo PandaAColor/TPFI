@@ -1,4 +1,6 @@
 from decimal import Decimal
+from typing import Any
+
 
 import boto3
 from botocore.config import Config
@@ -42,6 +44,7 @@ class CorporateDataDB:
     """Singleton-Acceso a tabla CorporateData"""
 
     _instance = None
+    _table: Any
 
     def __new__(cls):
         if cls._instance is None:
@@ -84,6 +87,7 @@ class CorporateLogDB:
     """Singleton- acceso a tabla CorporateLog"""
 
     __instance = None
+    _table: Any
 
     def __new__(cls):
         if cls.__instance is None:

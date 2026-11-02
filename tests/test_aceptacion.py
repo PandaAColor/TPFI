@@ -1,5 +1,6 @@
 """Pruebas de aceptación según consigna: Validación y Verificación."""
 
+import boto3.dynamodb
 import json
 import socket
 import subprocess
