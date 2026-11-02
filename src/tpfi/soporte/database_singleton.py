@@ -16,8 +16,18 @@ def _convert(item):
 
 
 CAMPOS_CORPORATE_DATA = [
-    "id", "cp", "CUIT", "domicilio", "idreq", "idSeq",
-    "localidad", "provincia", "sede", "seqID", "telefono", "web",
+    "id",
+    "cp",
+    "CUIT",
+    "domicilio",
+    "idreq",
+    "idSeq",
+    "localidad",
+    "provincia",
+    "sede",
+    "seqID",
+    "telefono",
+    "web",
 ]
 
 # Cliente compartido con reintentos adaptativos: evita
@@ -30,6 +40,7 @@ _CLIENTE_DYNAMODB = boto3.resource(
 
 class CorporateDataDB:
     """Singleton-Acceso a tabla CorporateData"""
+
     _instance = None
 
     def __new__(cls):
@@ -71,6 +82,7 @@ class CorporateDataDB:
 
 class CorporateLogDB:
     """Singleton- acceso a tabla CorporateLog"""
+
     __instance = None
 
     def __new__(cls):

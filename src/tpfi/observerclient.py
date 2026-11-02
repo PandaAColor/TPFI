@@ -1,4 +1,5 @@
 """se suscribe y escucha notificaciones"""
+
 import argparse
 import json
 import logging

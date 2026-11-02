@@ -1,4 +1,5 @@
 """Pruebas del patrón Observer."""
+
 from src.tpfi.soporte.observer import Subject
 
 

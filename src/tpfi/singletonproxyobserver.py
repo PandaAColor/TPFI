@@ -1,4 +1,5 @@
 """proxy + singleton + observer"""
+
 import argparse
 import json
 import logging
@@ -60,7 +61,7 @@ def handle_client(conn, db_data, db_log, subject):
             conn.sendall(json.dumps("Error", default=default_serializer).encode())
 
     except Exception as e:
-        logging.debug(f'Error: {e}')
+        logging.debug(f"Error: {e}")
         try:
             conn.sendall(json.dumps("Error", default=default_serializer).encode())
         except Exception:
@@ -68,7 +69,6 @@ def handle_client(conn, db_data, db_log, subject):
     finally:
         if not mantener_abierta:
             conn.close()
-
 
 
 def main():
@@ -87,15 +87,11 @@ def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
         server.bind(("", args.p))
         server.listen(5)
-        logging.debug(f'Servidor escuchando en: {args.p}')
+        logging.debug(f"Servidor escuchando en: {args.p}")
 
         while True:
             conn, _ = server.accept()
-            threading.Thread(
-                target=handle_client,
-                args=(conn, db_data, db_log, subject),
-                daemon=True
-            ).start()
+            threading.Thread(target=handle_client, args=(conn, db_data, db_log, subject), daemon=True).start()
 
 
 if __name__ == "__main__":

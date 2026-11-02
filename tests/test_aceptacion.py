@@ -1,4 +1,5 @@
 """Pruebas de aceptación según consigna: Validación y Verificación."""
+
 import boto3
 import json
 import socket
@@ -13,8 +14,10 @@ from src.tpfi.soporte.database_singleton import CorporateDataDB, CorporateLogDB
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 class FakeConn:
     """Simula la conexión de un cliente para capturar la respuesta del servidor."""
+
     def __init__(self, request=b""):
         self.request = request
         self.sent = b""
@@ -69,12 +72,12 @@ def mis_logs(db_log, uuid, max_paginas=3):
     return logs
 
 
-
 def correr_cliente(*args):
     """Corre el cliente como subproceso y devuelve el resultado."""
     return subprocess.run(
         [sys.executable, "-m", "src.tpfi.singletonclient", *args],
-        capture_output=True, text=True,
+        capture_output=True,
+        text=True,
     )
 
 
@@ -82,13 +85,16 @@ def correr_servidor(*args):
     """Corre el servidor como subproceso y devuelve el resultado."""
     return subprocess.run(
         [sys.executable, "-m", "src.tpfi.singletonproxyobserver", *args],
-        capture_output=True, text=True, timeout=10,
+        capture_output=True,
+        text=True,
+        timeout=10,
     )
 
 
 # ---------------------------------------------------------------------------
 # 1. Camino feliz de cada acción + registro en CorporateLog
 # ---------------------------------------------------------------------------
+
 
 def test_camino_feliz_list_registra_log():
     db_data = CorporateDataDB()
@@ -97,7 +103,8 @@ def test_camino_feliz_list_registra_log():
 
     respuesta, _ = ejecutar_accion(
         {"UUID": mi_uuid, "ACTION": "list"},
-        db_data=db_data, db_log=db_log,
+        db_data=db_data,
+        db_log=db_log,
     )
 
     assert isinstance(respuesta, list)
@@ -120,10 +127,7 @@ def test_camino_feliz_get_registra_log():
     assert respuesta["id"] == "test-get"
     assert respuesta["CUIT"] == "20-12345678-9"
 
-    assert any(
-        log.get("accion") == "get" and log.get("id") == "test-get"
-        for log in mis_logs(db_log, mi_uuid)
-    )
+    assert any(log.get("accion") == "get" and log.get("id") == "test-get" for log in mis_logs(db_log, mi_uuid))
 
 
 def test_camino_feliz_set_registra_log():
@@ -133,7 +137,8 @@ def test_camino_feliz_set_registra_log():
 
     respuesta, _ = ejecutar_accion(
         {"UUID": mi_uuid, "ACTION": "set", "data": {"id": "test-set", "CUIT": "20-12345678-9"}},
-        db_data=db_data, db_log=db_log,
+        db_data=db_data,
+        db_log=db_log,
     )
 
     assert respuesta["id"] == "test-set"
@@ -142,15 +147,13 @@ def test_camino_feliz_set_registra_log():
     item = db_data.get("test-set")
     assert item["id"] == "test-set"
 
-    assert any(
-        log.get("accion") == "set" and log.get("id") == "test-set"
-        for log in mis_logs(db_log, mi_uuid)
-    )
+    assert any(log.get("accion") == "set" and log.get("id") == "test-set" for log in mis_logs(db_log, mi_uuid))
 
 
 # ---------------------------------------------------------------------------
 # 2. Argumentos malformados en cada programa
 # ---------------------------------------------------------------------------
+
 
 def test_cliente_argumentos_malformados():
     """El cliente debe fallar si falta -i (archivo de entrada requerido)."""
@@ -168,13 +171,15 @@ def test_servidor_argumentos_malformados():
 # 3. Requerimiento sin datos mínimos
 # ---------------------------------------------------------------------------
 
+
 def test_get_sin_id_devuelve_error():
     db_data = CorporateDataDB()
     db_log = CorporateLogDB()
 
     respuesta, _ = ejecutar_accion(
         {"UUID": "test-uuid", "ACTION": "get"},
-        db_data=db_data, db_log=db_log,
+        db_data=db_data,
+        db_log=db_log,
     )
     assert respuesta == "Error"
 
@@ -185,7 +190,8 @@ def test_pedido_sin_action_devuelve_error():
 
     respuesta, _ = ejecutar_accion(
         {"UUID": "test-uuid"},
-        db_data=db_data, db_log=db_log,
+        db_data=db_data,
+        db_log=db_log,
     )
     assert respuesta == "Error"
 
@@ -193,6 +199,7 @@ def test_pedido_sin_action_devuelve_error():
 # ---------------------------------------------------------------------------
 # 4. Manejo en cliente de servidor caído
 # ---------------------------------------------------------------------------
+
 
 def test_cliente_con_servidor_caido():
     """El cliente debe manejar ConnectionRefusedError sin crashear."""
@@ -203,6 +210,7 @@ def test_cliente_con_servidor_caido():
 # ---------------------------------------------------------------------------
 # 5. Levantar el servidor dos veces
 # ---------------------------------------------------------------------------
+
 
 def test_servidor_dos_veces_mismo_puerto():
     """La segunda instancia debe fallar al intentar bindear el mismo puerto."""

@@ -1,9 +1,11 @@
 """Gestiona los sockets suscriptos"""
+
 import json
 
 
 class Subject:
     """Sujeto observado - sockets suscriptos"""
+
     def __init__(self):
         self._observers = {}
 
@@ -14,6 +16,6 @@ class Subject:
         payload = json.dumps(data).encode()
         for socket in self._observers.values():
             try:
-                    socket.sendall(payload)
+                socket.sendall(payload)
             except Exception:
-                 continue
+                continue

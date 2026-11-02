@@ -1,4 +1,5 @@
 """Prueba patrón singleton y operaciones de base"""
+
 from decimal import Decimal
 
 from src.tpfi.soporte.database_singleton import CorporateDataDB, CorporateLogDB

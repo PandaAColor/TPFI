@@ -1,4 +1,5 @@
 """Cliente singleton - get/set/list"""
+
 import argparse
 import json
 import logging
