@@ -73,23 +73,49 @@ pip install -r REQUIREMENTS.TXT
 
 ## Uso
 
-### Servidor
+Todos los comandos se ejecutan desde la raíz del proyecto, con el entorno virtual activado.
+El orden de arranque es: primero el servidor, después el cliente y/o el observer.
 
-```bash
+### Qué comando usar según lo que quieras hacer
+
+# Levantar el servidor en el puerto 8080
 python -m src.tpfi.singletonproxyobserver -p=8080 -v
-```
 
-### Cliente
+# Consultar un registro por id
+python -m src.tpfi.singletonclient -i input.json -o output.json -v
 
-```bash
-python -m src.tpfi.singletonclient -i=input.json -o=output.json -v
-```
+# Crear o actualizar un registro
+python -m src.tpfi.singletonclient -i input.json -o output.json -v
 
-### Observer
+# Listar todos los registros
+python -m src.tpfi.singletonclient -i input.json -o output.json -v
 
-```bash
-python -m src.tpfi.observerclient -s=localhost -p=8080 -o=output.json -v
-```
+# Suscribirse y recibir notificaciones
+python -m src.tpfi.observerclient -s=localhost -p=8080 -o output_observer.json -v
+
+Nota: el cliente (singletonclient) es el mismo comando para get, set y list.
+Lo que cambia es el contenido del archivo de entrada (input.json) o el JSON directo (-d),
+donde se indica la ACTION:
+
+# Consultar un registro por id (desde archivo)
+python -m src.tpfi.singletonclient -i input.json -o output.json -v
+
+# Consultar un registro por id (con -d)
+python -m src.tpfi.singletonclient -d '{\"UUID\":\"123456789\",\"ID\":\"1\",\"ACTION\":\"get\"}' -o output.json -v
+
+# Crear o actualizar un registro (desde archivo)
+python -m src.tpfi.singletonclient -i input.json -o output.json -v
+
+# Crear o actualizar un registro (con -d)
+python -m src.tpfi.singletonclient -d '{\"UUID\":\"123456789\",\"ID\":\"1\",\"ACTION\":\"set\",\"data\":{\"CUIT\":\"30-12345678-9\"}}' -o output.json -v
+
+# Listar todos los registros (desde archivo)
+python -m src.tpfi.singletonclient -i input.json -o output.json -v
+
+# Listar todos los registros (con -d)
+python -m src.tpfi.singletonclient -d '{\"UUID\":\"123456789\",\"ACTION\":\"list\"}' -o output.json -v
+
+
 
 ## Formato de los archivos JSON
 

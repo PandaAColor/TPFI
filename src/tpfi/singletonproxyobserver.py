@@ -44,6 +44,7 @@ def handle_client(conn, db_data, db_log, subject):
 
         elif action == "set":
             item = request.get("data", {})
+            item.setdefault("id", request.get("ID"))
             db_log.log(client_uuid, sesion, "set", item.get("id"), ts)
             saved = db_data.set(item)
             conn.sendall(json.dumps(saved, default=default_serializer).encode())
