@@ -1,6 +1,5 @@
 """Pruebas de aceptación según consigna: Validación y Verificación."""
 
-import boto3.dynamodb
 import json
 import socket
 import subprocess
@@ -8,6 +7,7 @@ import sys
 from unittest import mock
 
 import boto3
+import boto3.dynamodb.conditions
 
 from src.tpfi.singletonproxyobserver import handle_client
 from src.tpfi.soporte.database_singleton import CorporateDataDB, CorporateLogDB
