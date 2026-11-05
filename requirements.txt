@@ -12,7 +12,7 @@ ruff>=0.6.0
 black>=24.0.0
 mypy>=1.10.0
 pyright>=1.1.370
-bandit>=1.7.0
+bandit>=1.9.4
 
 # Documentación
 pdoc>=14.0.0
