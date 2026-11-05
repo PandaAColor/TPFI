@@ -15,4 +15,4 @@ pyright>=1.1.370
 bandit>=1.7.0
 
 # Documentación
-pdoc>=14.0.0
+pdoc>=16.0.0
